@@ -1,6 +1,7 @@
 img{
     display: flex;
     flex-direction: row;
+    margin: 0 auto;
 }
 .deck{
     display: flex;
@@ -12,10 +13,16 @@ img{
 
 .allcards{
     display: flex;
+    padding-bottom: 15px;
+}
+
+.trumpCard{
+    display: flex;
+
 }
 
 .playerCards{
     display: flex;
     flex-direction: row;
-
+    margin: 0 auto;
 }

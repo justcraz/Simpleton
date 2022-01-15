@@ -23,8 +23,8 @@ public class BoardUIController {
         List<Card> deck = boardService.getStack();
         List<Card> deck2 = new ArrayList<>();
         List<Card> playerCards = new ArrayList<>();
-        for (int i = 1; i <deck.size() ; i++) {
-                deck2.add(new Card(i,deck.get(i).getImage(),i*20));
+        for (int i = 1; i < boardService.getStack().size(); i++) {
+                deck2.add(new Card(i,boardService.getStack().get(i).getImage(),i*20));
         }
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
@@ -37,7 +37,22 @@ public class BoardUIController {
         List<Card> deck = boardService.getStack();
         List<Card> deck2 = new ArrayList<>();
         List<Card> playerCards = boardService.getPlayerCards();
-        for (int i = 1; i <boardService.getStack().size() ; i++) {
+        for (int i = 1; i < boardService.getStack().size(); i++) {
+            deck2.add(new Card(i,boardService.getStack().get(i).getImage(),i*20));
+        }
+        model.addAttribute("deck",deck2);
+        model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("playerCards",playerCards);
+        return "board";
+    }
+
+    @GetMapping("/shuffle")
+    String getShuffle(Model model){
+        List<Card> deck = boardService.getStack();
+        boardService.shuffleDeck(deck);
+        List<Card> deck2 = new ArrayList<>();
+        List<Card> playerCards = new ArrayList<>();
+        for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,boardService.getStack().get(i).getImage(),i*20));
         }
         model.addAttribute("deck",deck2);
