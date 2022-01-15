@@ -18,6 +18,12 @@ public class Card {
         this.image = image;
     }
 
+    public Card(int id, String image, int value) {
+        this.id = id;
+        this.image = image;
+        this.value = value;
+    }
+
     public int getId() {
         return id;
     }
