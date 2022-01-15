@@ -10,3 +10,12 @@ img{
     width: 180px;
 }
 
+.allcards{
+    display: flex;
+}
+
+.playerCards{
+    display: flex;
+    flex-direction: row;
+
+}

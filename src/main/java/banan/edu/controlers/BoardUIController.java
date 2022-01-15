@@ -28,6 +28,7 @@ public class BoardUIController {
         }
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("playerCards",playerCards);
         return "board";
     }
 
