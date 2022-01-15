@@ -22,13 +22,28 @@ public class BoardUIController {
     String getBoard(Model model){
         List<Card> deck = boardService.getStack();
         List<Card> deck2 = new ArrayList<>();
-        for (int i = 0; i <deck.size()-1 ; i++) {
-                deck2.add(new Card(i,"/image/back.png",i*4));
+        List<Card> playerCards = new ArrayList<>();
+        for (int i = 1; i <deck.size() ; i++) {
+                deck2.add(new Card(i,deck.get(i).getImage(),i*20));
         }
-
         model.addAttribute("deck",deck2);
-        model.addAttribute("trumpCard",deck.get(deck.size()-1));
+        model.addAttribute("trumpCard",deck.get(0));
         return "board";
     }
+
+    @GetMapping("/give/cards/to/player")
+    String givePlayerCards(Model model){
+        List<Card> deck = boardService.getStack();
+        List<Card> deck2 = new ArrayList<>();
+        List<Card> playerCards = boardService.getPlayerCards();
+        for (int i = 1; i <boardService.getStack().size() ; i++) {
+            deck2.add(new Card(i,boardService.getStack().get(i).getImage(),i*20));
+        }
+        model.addAttribute("deck",deck2);
+        model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("playerCards",playerCards);
+        return "board";
+    }
+
 
 }

@@ -1,34 +1,54 @@
 package banan.edu.service;
 
+import banan.edu.model.Board;
 import banan.edu.model.Card;
 import banan.edu.model.Deck;
 import banan.edu.model.Suit;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class BoardServiceImpl implements IBoardService {
-    private Deck deck = new Deck();
+    private Deck deck;
+    private Board board;
+
+    public BoardServiceImpl() {
+        deck = new Deck();
+        List<Card> deckCopy = new ArrayList<>(deck.getDeck());
+        board = new Board();
+        shuffleDeck(deckCopy);
+        board.getStack().addAll(deckCopy);
+    }
 
     @Override
-    public Card shuffleDeck() {
-        return null;
+    public void shuffleDeck(List<Card> deck) {
+        Collections.shuffle(deck);
     }
 
     @Override
     public List<Card> getStack() {
-        List<Card> cards = deck.getDeck();
+        List<Card> cards = board.getStack();
         return cards;
     }
 
     @Override
-    public List<Card> getPlayerCard() {
-        return null;
+    public List<Card> getPlayerCards() {
+        int playerHasCards = board.getPlayerCards().size();
+        int mustGivetoPlayer = 6 - playerHasCards;
+        if(playerHasCards < 6){
+            for (int i = 0; i <mustGivetoPlayer ; i++) {
+                Card card = board.getStack().pop();
+                board.getPlayerCards().add(card);
+            }
+        }
+        return board.getPlayerCards();
     }
 
     @Override
-    public List<Card> getDealerCard() {
+    public List<Card> getDealerCards() {
         return null;
     }
 

@@ -6,10 +6,10 @@ import banan.edu.model.Suit;
 import java.util.List;
 
 public interface IBoardService {
-    Card shuffleDeck();
+    void shuffleDeck(List<Card> deck);
     List<Card> getStack();
-    List<Card> getPlayerCard();
-    List<Card> getDealerCard();
+    List<Card> getPlayerCards();
+    List<Card> getDealerCards();
     List<Card> getPlayerMoves();
     List<Card> getDealerMoves();
     List<Card> getTrash();

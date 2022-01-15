@@ -1,7 +1,6 @@
 package banan.edu.model;
 
-import com.sun.org.apache.xpath.internal.operations.String;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -16,6 +15,14 @@ public class Board {
     private boolean turn;
 
     public Board() {
+        this.stack = new Stack<>();
+        this.playerCards = new ArrayList<>();
+        this.dealerCards = new ArrayList<>();
+        this.trash = new ArrayList<>();
+        this.message = "Welcome";
+        this.trump = null;
+        this.trumpCard = null;
+        this.turn = true;
     }
 
     public Board(Stack<Card> stack, List<Card> playerCards, List<Card> dealerCards, List<Card> trash, String message, Suit trump, Card trumpCard, boolean turn) {

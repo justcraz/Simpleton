@@ -16,6 +16,7 @@
 </head>
 <body>
 <h1>GAME</h1>
+<button><a href="/give/cards/to/player">Give cards for player</a></button>
 <div class="allcards">
     <div class="trumpCard">
         <img src="${trumpCard.image}" alt="">
@@ -24,5 +25,11 @@
         <img src="${card.image}" id="card${card.id}" alt="">
     </#list>
 </div>
+<div class="playerCards">
+    <#list playerCards as card>
+        <img src="${card.image}" alt="">
+    </#list>
+</div>
+
 </body>
 </html>
