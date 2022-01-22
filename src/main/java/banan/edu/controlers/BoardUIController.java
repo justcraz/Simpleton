@@ -23,12 +23,15 @@ public class BoardUIController {
         List<Card> deck = boardService.getStack();
         List<Card> deck2 = new ArrayList<>();
         List<Card> playerCards = new ArrayList<>();
+        List<Card> dealerCards = new ArrayList<>();
         for (int i = 1; i < boardService.getStack().size(); i++) {
-                deck2.add(new Card(i,boardService.getStack().get(i).getImage(),i*20));
+                deck2.add(new Card(i,"/image/back.png",i*3));
         }
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
         model.addAttribute("playerCards",playerCards);
+        model.addAttribute("dealerCards",dealerCards);
+        model.addAttribute("cardsSize",deck2.size());
         return "board";
     }
 
@@ -37,12 +40,32 @@ public class BoardUIController {
         List<Card> deck = boardService.getStack();
         List<Card> deck2 = new ArrayList<>();
         List<Card> playerCards = boardService.getPlayerCards();
+        List<Card> dealerCards = boardService.getDealerCards();
         for (int i = 1; i < boardService.getStack().size(); i++) {
-            deck2.add(new Card(i,boardService.getStack().get(i).getImage(),i*20));
+            deck2.add(new Card(i,"/image/back.png",i*3));
         }
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
         model.addAttribute("playerCards",playerCards);
+        model.addAttribute("dealerCards",dealerCards);
+        model.addAttribute("cardsSize",deck2.size());
+        return "board";
+    }
+
+    @GetMapping("/give/cards/to/dealer")
+    String giveDealerCards(Model model){
+        List<Card> deck = boardService.getStack();
+        List<Card> deck2 = new ArrayList<>();
+        List<Card> playerCards = boardService.getPlayerCards();
+        List<Card> dealerCards = boardService.getDealerCards();
+        for (int i = 1; i < boardService.getStack().size(); i++) {
+            deck2.add(new Card(i,"/image/back.png",i*3));
+        }
+        model.addAttribute("deck",deck2);
+        model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("playerCards",playerCards);
+        model.addAttribute("dealerCards",dealerCards);
+        model.addAttribute("cardsSize",deck2.size());
         return "board";
     }
 
@@ -52,12 +75,15 @@ public class BoardUIController {
         boardService.shuffleDeck(deck);
         List<Card> deck2 = new ArrayList<>();
         List<Card> playerCards = new ArrayList<>();
+        List<Card> dealerCards = new ArrayList<>();
         for (int i = 1; i < boardService.getStack().size(); i++) {
-            deck2.add(new Card(i,boardService.getStack().get(i).getImage(),i*20));
+            deck2.add(new Card(i,"/image/back.png",i*3));
         }
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
         model.addAttribute("playerCards",playerCards);
+        model.addAttribute("dealerCards",dealerCards);
+        model.addAttribute("cardsSize",deck2.size());
         return "board";
     }
 

@@ -26,3 +26,26 @@ img{
     flex-direction: row;
     margin: 0 auto;
 }
+
+.dealerCards{
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    padding-bottom: 360px;
+}
+
+button{
+    background-color: maroon;
+    width: 150px;
+    height: 40px;
+}
+a{
+    color: white;
+}
+
+.cardsNumb{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}

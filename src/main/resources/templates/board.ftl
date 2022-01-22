@@ -17,6 +17,7 @@
 <body>
 <h1>GAME</h1>
 <button><a href="/ui/give/cards/to/player">Give cards for player</a></button>
+<button><a href="/ui/give/cards/to/dealer">Give cards for dealer</a></button>
 <button><a href="/ui/shuffle">shuffle</a></button>
 <div class="allcards">
     <div class="trumpCard">
@@ -26,7 +27,13 @@
         <#list deck as card>
             <img src="${card.image}" id="card${card.id}" alt="">
         </#list>
+         <h3 class="cardsNumb">cards: ${cardsSize}</h3>
     </div>
+</div>
+<div class="dealerCards">
+    <#list dealerCards as card>
+        <img src="${card.image}" alt="">
+    </#list>
 </div>
 <div class="playerCards">
     <#list playerCards as card>
