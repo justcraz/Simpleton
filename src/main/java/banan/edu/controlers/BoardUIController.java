@@ -127,6 +127,26 @@ public class BoardUIController {
         model.addAttribute("cardsSize",deck2.size()+1);
         return "board";
     }
-//zdrastvui nebo v oblakax
+
+    @GetMapping("/move/to/trash")
+    String getMoveToTrash(Model model){
+        gameService.moveToTrash();
+        List<Card> deck = boardService.getStack();
+        List<Card> deck2 = new ArrayList<>();
+        List<Card> playerCards = boardService.getPlayerCards();
+        List<Card> dealerCards = boardService.getDealerCards();
+        List<Card> playerMoves = boardService.getPlayerMoves();
+        for (int i = 1; i < boardService.getStack().size(); i++) {
+            deck2.add(new Card(i,"/image/back.png",i*3));
+        }
+        model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("dealerMoves",boardService.getDealerMoves());
+        model.addAttribute("deck",deck2);
+        model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("playerCards",playerCards);
+        model.addAttribute("dealerCards",dealerCards);
+        model.addAttribute("cardsSize",deck2.size()+1);
+        return "board";
+    }
 
 }
