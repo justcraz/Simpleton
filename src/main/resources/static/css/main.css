@@ -2,13 +2,15 @@ img{
     display: flex;
     flex-direction: row;
     margin: 0 auto;
+    /*height: 130px;*/
 }
 .deck{
     display: flex;
     align-items: center;
     position: relative;
-    margin-right: 60px;
     width: 180px;
+    /*height: 130px;*/
+
 }
 
 .allcards{
@@ -44,8 +46,7 @@ a{
 }
 
 .cardsNumb{
-    display: flex;
-    align-items: center;
-    justify-content: center;
     z-index: 1;
+    /*width: 50%;*/
+    /*margin: 0 auto;*/
 }
