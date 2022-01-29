@@ -100,6 +100,7 @@ public class BoardUIController {
         return "board";
     }
 
+
     @GetMapping("/player/throw/{id}")
     String getPlayerThrowCard(Model model, @PathVariable("id") int id){
         List<Card> deck = boardService.getStack();
