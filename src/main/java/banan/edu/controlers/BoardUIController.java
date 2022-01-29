@@ -121,5 +121,6 @@ public class BoardUIController {
         model.addAttribute("cardsSize",deck2.size()+1);
         return "board";
     }
-//jggjgjgjgj
+//zdrastvui nebo c oblakax
+
 }
