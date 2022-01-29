@@ -35,6 +35,11 @@
         <img src="${card.image}" alt="">
     </#list>
 </div>
+<div class="table">
+    <#list playerMoves as card>
+        <img src="${card.image}" alt="">
+    </#list>
+</div>
 <div class="playerCards">
     <#list playerCards as card>
         <button onclick="window.location.href='/ui/player/throw/${card.id}'"><img src="${card.image}" alt=""></button>
