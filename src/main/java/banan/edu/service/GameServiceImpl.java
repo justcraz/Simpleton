@@ -1,13 +1,17 @@
 package banan.edu.service;
 
 import banan.edu.model.Card;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class GameServiceImpl implements IGameService {
-    @Override
-    public Card makeMove() {
-        return null;
+
+    public static void makeMove(int cardId, List<Card> playerCards, List<Card> playerMoves) {
+        Card card = playerCards.get(cardId);
+        playerMoves.add(card);
+        playerCards.remove(card);
     }
 
     @Override

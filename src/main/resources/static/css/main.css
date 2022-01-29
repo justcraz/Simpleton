@@ -2,14 +2,12 @@ img{
     display: flex;
     flex-direction: row;
     margin: 0 auto;
-    /*height: 130px;*/
 }
 .deck{
     display: flex;
     align-items: center;
     position: relative;
     width: 180px;
-    /*height: 130px;*/
 
 }
 
@@ -47,6 +45,11 @@ a{
 
 .cardsNumb{
     z-index: 1;
-    /*width: 50%;*/
-    /*margin: 0 auto;*/
+    width: 50%;
+    margin: 0 auto;
+}
+
+.playerCards button{
+    display: flex;
+    height: 180px;
 }

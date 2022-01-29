@@ -5,7 +5,7 @@ import banan.edu.model.Card;
 import java.util.List;
 
 public interface IGameService {
-    Card makeMove();
+    // void makeMove(int cardId, List<Card> playerCards, List<Card> playerMoves);
     Card dealerMove();
     Card myDefence();
     Card dealerDefence();

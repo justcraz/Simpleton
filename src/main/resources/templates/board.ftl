@@ -37,9 +37,8 @@
 </div>
 <div class="playerCards">
     <#list playerCards as card>
-        <img src="${card.image}" alt="">
+        <button onclick="window.location.href='/ui/player/throw/${card.id}'"><img src="${card.image}" alt=""></button>
     </#list>
 </div>
-
 </body>
 </html>

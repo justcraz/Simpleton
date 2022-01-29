@@ -62,7 +62,8 @@ public class BoardServiceImpl implements IBoardService {
 
     @Override
     public List<Card> getPlayerMoves() {
-        return null;
+
+        return new ArrayList<>();
     }
 
     @Override
