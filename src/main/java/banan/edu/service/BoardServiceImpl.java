@@ -36,14 +36,6 @@ public class BoardServiceImpl implements IBoardService {
 
     @Override
     public List<Card> getPlayerCards() {
-        int playerHasCards = board.getPlayerCards().size();
-        int mustGivetoPlayer = 6 - playerHasCards;
-        if(playerHasCards < 6){
-            for (int i = 0; i <mustGivetoPlayer ; i++) {
-                Card card = board.getStack().pop();
-                board.getPlayerCards().add(card);
-            }
-        }
         return board.getPlayerCards();
     }
 

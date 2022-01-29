@@ -53,3 +53,9 @@ a{
     display: flex;
     height: 180px;
 }
+
+.table{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}

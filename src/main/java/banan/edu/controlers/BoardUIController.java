@@ -46,6 +46,7 @@ public class BoardUIController {
     String givePlayerCards(Model model){
         List<Card> deck = boardService.getStack();
         List<Card> deck2 = new ArrayList<>();
+        gameService.giveCards();
         List<Card> playerCards = boardService.getPlayerCards();
         List<Card> dealerCards = boardService.getDealerCards();
         List<Card> playerMoves = boardService.getPlayerMoves();
@@ -121,6 +122,6 @@ public class BoardUIController {
         model.addAttribute("cardsSize",deck2.size()+1);
         return "board";
     }
-//zdrastvui nebo c oblakax
+//zdrastvui nebo v oblakax
 
 }
