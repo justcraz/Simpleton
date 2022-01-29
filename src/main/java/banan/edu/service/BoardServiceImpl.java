@@ -23,11 +23,13 @@ public class BoardServiceImpl implements IBoardService {
         board = new Board();
         shuffleDeck(deckCopy);
         board.getStack().addAll(deckCopy);
+
     }
 
     @Override
     public void shuffleDeck(List<Card> deck) {
         Collections.shuffle(deck);
+        board.setTrump(deck.get(0).getSuit());
     }
 
     @Override
@@ -81,6 +83,6 @@ public class BoardServiceImpl implements IBoardService {
 
     @Override
     public Suit getTrump() {
-        return null;
+        return board.getTrump();
     }
 }

@@ -5,8 +5,11 @@ import banan.edu.model.Suit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements IGameService {
@@ -34,17 +37,28 @@ public class GameServiceImpl implements IGameService {
     public void dealerDefence() {
         List<Card> playerMoves = boardService.getPlayerMoves();
         Card cardAttack = playerMoves.get(playerMoves.size()-1);
-        Card cardAsDeffence = boardService.getDealerCards().stream()
-                .filter(el->el.getSuit().equals(cardAttack.getSuit()))
-                .filter(el->el.getValue()>cardAttack.getValue())
-                .findFirst().get();
 
+        List<Card> trumps = boardService.getDealerCards().stream()
+                .filter(el->el.getSuit().equals(boardService.getTrump())).collect(Collectors.toList());
+
+        trumps.forEach(el->el.setValue(el.getValue()+13));
+
+        List<Card> suits = boardService.getDealerCards().stream()
+                .filter(el->el.getSuit().equals(cardAttack.getSuit()))
+                .filter(el->el.getValue()>cardAttack.getValue()).collect(Collectors.toList());
+
+        List<Card> listDeffence = new ArrayList<>();
+        listDeffence.addAll(trumps);
+        listDeffence.addAll(suits);
+
+        Card cardAsDeffence = listDeffence.stream().min(Comparator.comparing(Card::getValue)).get();
         if(cardAsDeffence != null){
             boardService.getDealerCards().remove(cardAsDeffence);
             boardService.getDealerMoves().add(cardAsDeffence);
         }
-
-
+        System.out.println(trumps);
+        System.out.println("__________");
+        System.out.println(listDeffence);
     }
 
     public void giveCards() {
