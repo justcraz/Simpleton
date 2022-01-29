@@ -1,6 +1,7 @@
 package banan.edu.service;
 
 import banan.edu.model.Card;
+import banan.edu.model.Suit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,19 @@ public class GameServiceImpl implements IGameService {
     }
 
     @Override
-    public Card dealerDefence() {
-        return null;
+    public void dealerDefence() {
+        List<Card> playerMoves = boardService.getPlayerMoves();
+        Card cardAttack = playerMoves.get(playerMoves.size()-1);
+        Card cardAsDeffence = boardService.getDealerCards().stream()
+                .filter(el->el.getSuit().equals(cardAttack.getSuit()))
+                .filter(el->el.getValue()>cardAttack.getValue()).findFirst().get();
+
+        if(cardAsDeffence != null){
+            boardService.getDealerCards().remove(cardAsDeffence);
+            boardService.getDealerMoves().add(cardAsDeffence);
+        }
+
+
     }
 
     public void giveCards() {

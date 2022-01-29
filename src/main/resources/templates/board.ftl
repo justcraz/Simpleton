@@ -36,9 +36,16 @@
     </#list>
 </div>
 <div class="table">
-    <#list playerMoves as card>
-        <img src="${card.image}" alt="">
-    </#list>
+    <div class="dealermoves">
+        <#list dealerMoves as card>
+            <img src="${card.image}" alt="">
+        </#list>
+    </div>
+    <div class="playerMoves">
+        <#list playerMoves as card>
+            <img src="${card.image}" alt="">
+        </#list>
+    </div>
 </div>
 <div class="playerCards">
     <#list playerCards as card>

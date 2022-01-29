@@ -7,7 +7,7 @@ import java.util.List;
 public interface IGameService {
     Card dealerMove();
     Card myDefence();
-    Card dealerDefence();
+    void dealerDefence();
     Card rechargeCards();
     List<Card> moveToTrash();
     List<Card> giveUpAndTakeCards();

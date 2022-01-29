@@ -34,6 +34,7 @@ public class BoardUIController {
                 deck2.add(new Card(i,"/image/back.png",i*3));
         }
         model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
         model.addAttribute("playerCards",playerCards);
@@ -54,6 +55,7 @@ public class BoardUIController {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
         model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
         model.addAttribute("playerCards",playerCards);
@@ -73,6 +75,7 @@ public class BoardUIController {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
         model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
         model.addAttribute("playerCards",playerCards);
@@ -93,6 +96,7 @@ public class BoardUIController {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
         model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
         model.addAttribute("playerCards",playerCards);
@@ -113,8 +117,9 @@ public class BoardUIController {
         for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
-
+        gameService.dealerDefence();
         model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
         model.addAttribute("playerCards",playerCards);

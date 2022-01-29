@@ -31,7 +31,7 @@ img{
     display: flex;
     flex-direction: row;
     margin: 0 auto;
-    padding-bottom: 360px;
+    padding-bottom: 50px;
 }
 
 button{
@@ -52,10 +52,13 @@ a{
 .playerCards button{
     display: flex;
     height: 180px;
+    margin: 0 auto;
+
 }
 
-.table{
+.dealermoves,.playerMoves{
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    margin: 0 auto;
+    height: 180px;
+    padding-bottom: 15px;
 }
