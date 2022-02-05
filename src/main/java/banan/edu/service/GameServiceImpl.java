@@ -52,7 +52,6 @@ public class GameServiceImpl implements IGameService {
     @Override
     public void dealerDefence() {
         List<Card> playerMoves = boardService.getPlayerMoves();
-        System.out.println("player " + playerMoves);
         Card cardAttack = playerMoves.get(playerMoves.size()-1);
 
         if (playerMoves.size() == boardService.getDealerMoves().size()){
@@ -60,8 +59,9 @@ public class GameServiceImpl implements IGameService {
         }
 
         List<Card> trumps = boardService.getDealerCards().stream()
-                .filter(el->el.getSuit().equals(boardService.getTrump())).collect(Collectors.toList());
-        System.out.println(trumps);
+                .filter(el->el.getSuit().equals(boardService.getTrump()))
+                .filter(el->el.getValue()>cardAttack.getValue())
+                .collect(Collectors.toList());
         List<Card> suits = boardService.getDealerCards().stream()
                 .filter(el->el.getSuit().equals(cardAttack.getSuit()))
                 .filter(el->el.getValue()>cardAttack.getValue()).collect(Collectors.toList());
@@ -69,9 +69,12 @@ public class GameServiceImpl implements IGameService {
         List<Card> listDeffence = new ArrayList<>();
         listDeffence.addAll(trumps);
         listDeffence.addAll(suits);
-
-        Card cardAsDeffence = listDeffence.stream().min(Comparator.comparing(Card::getValue)).get();
-        System.out.println(cardAsDeffence);
+        Card cardAsDeffence;
+        if(listDeffence.isEmpty()){
+            cardAsDeffence = null;
+        }else{
+            cardAsDeffence = listDeffence.stream().min(Comparator.comparing(Card::getValue)).get();
+        }
         if(cardAsDeffence != null && cardAsDeffence.getValue() > cardAttack.getValue()){
             boardService.getDealerCards().remove(cardAsDeffence);
             boardService.getDealerMoves().add(cardAsDeffence);
