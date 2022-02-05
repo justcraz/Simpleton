@@ -29,11 +29,10 @@ public class BoardUIController {
         List<Card> deck2 = new ArrayList<>();
         List<Card> playerCards = new ArrayList<>();
         List<Card> dealerCards = new ArrayList<>();
-        List<Card> playerMoves = boardService.getPlayerMoves();
         for (int i = 1; i < boardService.getStack().size(); i++) {
                 deck2.add(new Card(i,"/image/back.png",i*3));
         }
-        model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
@@ -50,11 +49,10 @@ public class BoardUIController {
         gameService.giveCards();
         List<Card> playerCards = boardService.getPlayerCards();
         List<Card> dealerCards = boardService.getDealerCards();
-        List<Card> playerMoves = boardService.getPlayerMoves();
         for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
-        model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
@@ -70,11 +68,10 @@ public class BoardUIController {
         List<Card> deck2 = new ArrayList<>();
         List<Card> playerCards = boardService.getPlayerCards();
         List<Card> dealerCards = boardService.getDealerCards();
-        List<Card> playerMoves = boardService.getPlayerMoves();
         for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
-        model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
@@ -91,11 +88,10 @@ public class BoardUIController {
         List<Card> deck2 = new ArrayList<>();
         List<Card> playerCards = new ArrayList<>();
         List<Card> dealerCards = new ArrayList<>();
-        List<Card> playerMoves = boardService.getPlayerMoves();
         for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
-        model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
@@ -113,12 +109,11 @@ public class BoardUIController {
         List<Card> playerCards = boardService.getPlayerCards();
         List<Card> dealerCards = boardService.getDealerCards();
         gameService.makeMove(id,playerCards,boardService.getPlayerMoves());
-        List<Card> playerMoves = boardService.getPlayerMoves();
         for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
         gameService.dealerDefence();
-        model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));
@@ -135,11 +130,10 @@ public class BoardUIController {
         List<Card> deck2 = new ArrayList<>();
         List<Card> playerCards = boardService.getPlayerCards();
         List<Card> dealerCards = boardService.getDealerCards();
-        List<Card> playerMoves = boardService.getPlayerMoves();
         for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
-        model.addAttribute("playerMoves",playerMoves);
+        model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
         model.addAttribute("trumpCard",deck.get(0));

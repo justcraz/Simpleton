@@ -56,9 +56,6 @@ public class GameServiceImpl implements IGameService {
             boardService.getDealerCards().remove(cardAsDeffence);
             boardService.getDealerMoves().add(cardAsDeffence);
         }
-        System.out.println(trumps);
-        System.out.println("__________");
-        System.out.println(listDeffence);
     }
 
     public void giveCards() {
