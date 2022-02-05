@@ -32,10 +32,13 @@ public class BoardUIController {
         for (int i = 1; i < boardService.getStack().size(); i++) {
                 deck2.add(new Card(i,"/image/back.png",i*3));
         }
+
+        String turnAsString = (boardService.getTurn())? "player move" : "dealer move";
+        model.addAttribute("turn",turnAsString);
         model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
-        model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("trumpCard",boardService.getTrumpCard());
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",deck2.size()+1);
@@ -52,10 +55,12 @@ public class BoardUIController {
         for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
+        String turnAsString = (boardService.getTurn())? "player move" : "dealer move";
+        model.addAttribute("turn",turnAsString);
         model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
-        model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("trumpCard",boardService.getTrumpCard());
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",deck2.size()+1);
@@ -72,13 +77,16 @@ public class BoardUIController {
         for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
+        String turnAsString = (boardService.getTurn())? "player move" : "dealer move";
+        model.addAttribute("turn",turnAsString);
         model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
-        model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("trumpCard",boardService.getTrumpCard());
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",deck2.size()+1);
+
         return "board";
     }
 
@@ -92,10 +100,12 @@ public class BoardUIController {
         for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
+        String turnAsString = (boardService.getTurn())? "player move" : "dealer move";
+        model.addAttribute("turn",turnAsString);
         model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
-        model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("trumpCard",boardService.getTrumpCard());
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",deck2.size()+1);
@@ -114,10 +124,12 @@ public class BoardUIController {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
         gameService.dealerDefence();
+        String turnAsString = (boardService.getTurn())? "player move" : "dealer move";
+        model.addAttribute("turn",turnAsString);
         model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
-        model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("trumpCard",boardService.getTrumpCard());
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",deck2.size()+1);
@@ -134,10 +146,33 @@ public class BoardUIController {
         for (int i = 1; i < boardService.getStack().size(); i++) {
             deck2.add(new Card(i,"/image/back.png",i*3));
         }
+        String turnAsString = (boardService.getTurn())? "player move" : "dealer move";
+        model.addAttribute("turn",turnAsString);
         model.addAttribute("playerMoves",boardService.getPlayerMoves());
         model.addAttribute("dealerMoves",boardService.getDealerMoves());
         model.addAttribute("deck",deck2);
-        model.addAttribute("trumpCard",deck.get(0));
+        model.addAttribute("trumpCard",boardService.getTrumpCard());
+        model.addAttribute("playerCards",playerCards);
+        model.addAttribute("dealerCards",dealerCards);
+        model.addAttribute("cardsSize",deck2.size()+1);
+        return "board";
+    }
+
+    @GetMapping("/dealer/move")
+    String DealerMove(Model model){
+        List<Card> deck2 = new ArrayList<>();
+        gameService.dealerMove();
+        List<Card> playerCards = boardService.getPlayerCards();
+        List<Card> dealerCards = boardService.getDealerCards();
+        for (int i = 1; i < boardService.getStack().size(); i++) {
+            deck2.add(new Card(i,"/image/back.png",i*3));
+        }
+        String turnAsString = (boardService.getTurn())? "player move" : "dealer move";
+        model.addAttribute("turn",turnAsString);
+        model.addAttribute("playerMoves",boardService.getPlayerMoves());
+        model.addAttribute("dealerMoves",boardService.getDealerMoves());
+        model.addAttribute("deck",deck2);
+        model.addAttribute("trumpCard",boardService.getTrumpCard());
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",deck2.size()+1);

@@ -20,6 +20,8 @@
 <button><a href="/ui/give/cards/to/dealer">Give cards for dealer</a></button>
 <button><a href="/ui/shuffle">shuffle</a></button>
 <button><a href="/ui/move/to/trash">move to trash</a></button>
+<button><a href="/ui/dealer/move">dealer moves</a></button>
+<h1>${turn}</h1>
 <div class="allcards">
     <div class="trumpCard">
         <img src="${trumpCard.image}" alt="">

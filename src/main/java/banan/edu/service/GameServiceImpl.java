@@ -41,6 +41,9 @@ public class GameServiceImpl implements IGameService {
 
     @Override
     public Card dealerMove() {
+        Card dealerAttack = boardService.getDealerCards().stream().min(Comparator.comparing(Card::getValue)).get();
+        boardService.getDealerCards().remove(dealerAttack);
+        boardService.getDealerMoves().add(dealerAttack);
         return null;
     }
 
@@ -89,7 +92,7 @@ public class GameServiceImpl implements IGameService {
     public void giveCards() {
         int playerHasCards = boardService.getPlayerCards().size();
         int mustGivetoPlayer = 6 - playerHasCards;
-        if(playerHasCards < 7){
+        if(playerHasCards < 7 && !boardService.getStack().isEmpty()){
             for (int i = 0; i <mustGivetoPlayer ; i++) {
                 Card card = boardService.getStack().get(boardService.getStack().size()-1);
                 if(card.getSuit().equals(boardService.getTrump())){
@@ -98,13 +101,14 @@ public class GameServiceImpl implements IGameService {
                 boardService.getStack().remove(card);
                 boardService.getPlayerCards().add(card);
             }
+            boardService.getPlayerCards().sort(Comparator.comparing(Card::getSuit).thenComparing(Card::getValue));
         }
     }
 
     public void giveCardsToDealer() {
         int dealerHasCards = boardService.getDealerCards().size();
         int mustGivetoDealer = 6 - dealerHasCards;
-        if(dealerHasCards < 7 ){
+        if(dealerHasCards < 7 && !boardService.getStack().isEmpty()){
             for (int i = 0; i <mustGivetoDealer ; i++) {
                 Card card = boardService.getStack().get(boardService.getStack().size()-1);
                 if(card.getSuit().equals(boardService.getTrump())){
@@ -113,6 +117,7 @@ public class GameServiceImpl implements IGameService {
                 boardService.getStack().remove(card);
                 boardService.getDealerCards().add(card);
             }
+            boardService.getDealerCards().sort(Comparator.comparing(Card::getSuit).thenComparing(Card::getValue));
         }
     }
 

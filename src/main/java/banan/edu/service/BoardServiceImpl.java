@@ -30,6 +30,7 @@ public class BoardServiceImpl implements IBoardService {
     public void shuffleDeck(List<Card> deck) {
         Collections.shuffle(deck);
         board.setTrump(deck.get(0).getSuit());
+        board.setTrumpCard(deck.get(0));
     }
 
     @Override
@@ -70,11 +71,41 @@ public class BoardServiceImpl implements IBoardService {
 
     @Override
     public boolean getTurn() {
-        return false;
+        if(getStack().size()==40){
+            Card dealercard = getDealerCards().stream().filter(el->el.getSuit().equals(getTrump()))
+                    .min(Comparator.comparing(Card::getValue)).orElse(null);
+            Card playercard = getPlayerCards().stream().filter(el->el.getSuit().equals(getTrump()))
+                    .min(Comparator.comparing(Card::getValue)).orElse(null);
+            if(dealercard == null && playercard == null){
+                board.setTurn(true);
+                return board.isTurn();
+
+            }
+            if(dealercard == null && playercard != null){
+                board.setTurn(true);
+                return board.isTurn();
+
+            }
+            if(dealercard != null && playercard == null){
+                board.setTurn(false);
+                return board.isTurn();
+
+            }
+            if(playercard.getValue() > dealercard.getValue()){
+               board.setTurn(false);
+            }else{
+               board.setTurn(true);
+            }
+
+        }
+        return board.isTurn();
     }
 
     @Override
     public Suit getTrump() {
         return board.getTrump();
+    }
+    public Card getTrumpCard() {
+        return board.getTrumpCard();
     }
 }
