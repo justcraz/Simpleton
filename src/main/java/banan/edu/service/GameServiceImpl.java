@@ -83,7 +83,6 @@ public class GameServiceImpl implements IGameService {
             boardService.getDealerCards().addAll(boardService.getDealerMoves());
             boardService.getDealerMoves().removeAll(boardService.getDealerMoves());
             boardService.getPlayerMoves().removeAll(boardService.getPlayerMoves());
-            return;
         }
     }
 
