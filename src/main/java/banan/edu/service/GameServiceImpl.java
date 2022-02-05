@@ -70,6 +70,18 @@ public class GameServiceImpl implements IGameService {
         }
     }
 
+    public void giveCardsToDealer() {
+        int dealerHasCards = boardService.getDealerCards().size();
+        int mustGivetoDealer = 6 - dealerHasCards;
+        if(dealerHasCards < 7 ){
+            for (int i = 0; i <mustGivetoDealer ; i++) {
+                Card card = boardService.getStack().get(boardService.getStack().size()-1);
+                boardService.getStack().remove(card);
+                boardService.getDealerCards().add(card);
+            }
+        }
+    }
+
     @Override
     public Card rechargeCards() {
         return null;

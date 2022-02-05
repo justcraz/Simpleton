@@ -66,6 +66,7 @@ public class BoardUIController {
     String giveDealerCards(Model model){
         List<Card> deck = boardService.getStack();
         List<Card> deck2 = new ArrayList<>();
+        gameService.giveCardsToDealer();
         List<Card> playerCards = boardService.getPlayerCards();
         List<Card> dealerCards = boardService.getDealerCards();
         for (int i = 1; i < boardService.getStack().size(); i++) {
