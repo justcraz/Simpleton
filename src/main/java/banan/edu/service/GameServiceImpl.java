@@ -1,6 +1,7 @@
 package banan.edu.service;
 
 import banan.edu.model.Card;
+import banan.edu.model.Denomination;
 import banan.edu.model.Suit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,23 @@ public class GameServiceImpl implements IGameService {
 
     public void makeMove(int cardId, List<Card> playerCards, List<Card> playerMoves) {
         Card card = playerCards.stream().filter(el->el.getId()==cardId).findFirst().get();
-        playerMoves.add(card);
-        playerCards.remove(card);
+        if(boardService.getPlayerMoves().size() == 0) {
+            playerMoves.add(card);
+            playerCards.remove(card);
+        }else {
+            List<Card> cardsInAction = new ArrayList<>();
+            cardsInAction.addAll(boardService.getPlayerMoves());
+            cardsInAction.addAll(boardService.getDealerMoves());
+            List<Denomination> denominationsInAction =
+                    cardsInAction.stream()
+                            .map(el -> el.getDenomination())
+                            .collect(Collectors.toList());
+            Denomination cardDenomination = card.getDenomination();
+            if (denominationsInAction.contains(cardDenomination)) {
+                playerMoves.add(card);
+                playerCards.remove(card);
+            }
+        }
     }
 
     @Override
@@ -36,13 +52,16 @@ public class GameServiceImpl implements IGameService {
     @Override
     public void dealerDefence() {
         List<Card> playerMoves = boardService.getPlayerMoves();
+        System.out.println("player " + playerMoves);
         Card cardAttack = playerMoves.get(playerMoves.size()-1);
+
+        if (playerMoves.size() == boardService.getDealerMoves().size()){
+            return;
+        }
 
         List<Card> trumps = boardService.getDealerCards().stream()
                 .filter(el->el.getSuit().equals(boardService.getTrump())).collect(Collectors.toList());
-
-        trumps.forEach(el->el.setValue(el.getValue()+13));
-
+        System.out.println(trumps);
         List<Card> suits = boardService.getDealerCards().stream()
                 .filter(el->el.getSuit().equals(cardAttack.getSuit()))
                 .filter(el->el.getValue()>cardAttack.getValue()).collect(Collectors.toList());
@@ -52,9 +71,16 @@ public class GameServiceImpl implements IGameService {
         listDeffence.addAll(suits);
 
         Card cardAsDeffence = listDeffence.stream().min(Comparator.comparing(Card::getValue)).get();
-        if(cardAsDeffence != null){
+        System.out.println(cardAsDeffence);
+        if(cardAsDeffence != null && cardAsDeffence.getValue() > cardAttack.getValue()){
             boardService.getDealerCards().remove(cardAsDeffence);
             boardService.getDealerMoves().add(cardAsDeffence);
+        }else{
+            boardService.getDealerCards().addAll(playerMoves);
+            boardService.getDealerCards().addAll(boardService.getDealerMoves());
+            boardService.getDealerMoves().removeAll(boardService.getDealerMoves());
+            boardService.getPlayerMoves().removeAll(boardService.getPlayerMoves());
+            return;
         }
     }
 
@@ -64,6 +90,9 @@ public class GameServiceImpl implements IGameService {
         if(playerHasCards < 7){
             for (int i = 0; i <mustGivetoPlayer ; i++) {
                 Card card = boardService.getStack().get(boardService.getStack().size()-1);
+                if(card.getSuit().equals(boardService.getTrump())){
+                    card.setValue(card.getValue()+13);
+                }
                 boardService.getStack().remove(card);
                 boardService.getPlayerCards().add(card);
             }
@@ -76,6 +105,9 @@ public class GameServiceImpl implements IGameService {
         if(dealerHasCards < 7 ){
             for (int i = 0; i <mustGivetoDealer ; i++) {
                 Card card = boardService.getStack().get(boardService.getStack().size()-1);
+                if(card.getSuit().equals(boardService.getTrump())){
+                    card.setValue(card.getValue()+13);
+                }
                 boardService.getStack().remove(card);
                 boardService.getDealerCards().add(card);
             }
