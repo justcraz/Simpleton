@@ -19,31 +19,35 @@ public class GameServiceImpl implements IGameService {
     BoardServiceImpl boardService;
 
     public void makeMove(int cardId, List<Card> playerCards, List<Card> playerMoves) {
-        Card card = playerCards.stream().filter(el->el.getId()==cardId).findFirst().get();
-        if(boardService.getPlayerMoves().size() == 0) {
-            playerMoves.add(card);
-            playerCards.remove(card);
-        }else {
-            List<Card> cardsInAction = new ArrayList<>();
-            cardsInAction.addAll(boardService.getPlayerMoves());
-            cardsInAction.addAll(boardService.getDealerMoves());
-            List<Denomination> denominationsInAction =
-                    cardsInAction.stream()
-                            .map(el -> el.getDenomination())
-                            .collect(Collectors.toList());
-            Denomination cardDenomination = card.getDenomination();
-            if (denominationsInAction.contains(cardDenomination)) {
+        if(boardService.getTurn()){
+            Card card = playerCards.stream().filter(el->el.getId()==cardId).findFirst().get();
+            if(boardService.getPlayerMoves().size() == 0) {
                 playerMoves.add(card);
                 playerCards.remove(card);
+            }else {
+                List<Card> cardsInAction = new ArrayList<>();
+                cardsInAction.addAll(boardService.getPlayerMoves());
+                cardsInAction.addAll(boardService.getDealerMoves());
+                List<Denomination> denominationsInAction =
+                        cardsInAction.stream()
+                                .map(el -> el.getDenomination())
+                                .collect(Collectors.toList());
+                Denomination cardDenomination = card.getDenomination();
+                if (denominationsInAction.contains(cardDenomination)) {
+                    playerMoves.add(card);
+                    playerCards.remove(card);
+                }
             }
         }
     }
 
     @Override
     public Card dealerMove() {
-        Card dealerAttack = boardService.getDealerCards().stream().min(Comparator.comparing(Card::getValue)).get();
-        boardService.getDealerCards().remove(dealerAttack);
-        boardService.getDealerMoves().add(dealerAttack);
+        if(boardService.getTurn()==false) {
+            Card dealerAttack = boardService.getDealerCards().stream().min(Comparator.comparing(Card::getValue)).get();
+            boardService.getDealerCards().remove(dealerAttack);
+            boardService.getDealerMoves().add(dealerAttack);
+        }
         return null;
     }
 
@@ -55,7 +59,8 @@ public class GameServiceImpl implements IGameService {
     @Override
     public void dealerDefence() {
         List<Card> playerMoves = boardService.getPlayerMoves();
-        Card cardAttack = playerMoves.get(playerMoves.size()-1);
+        if(playerMoves.size() != 0) {
+            Card cardAttack = playerMoves.get(playerMoves.size() - 1);
 
         if (playerMoves.size() == boardService.getDealerMoves().size()){
             return;
@@ -86,6 +91,7 @@ public class GameServiceImpl implements IGameService {
             boardService.getDealerCards().addAll(boardService.getDealerMoves());
             boardService.getDealerMoves().removeAll(boardService.getDealerMoves());
             boardService.getPlayerMoves().removeAll(boardService.getPlayerMoves());
+        }
         }
     }
 
@@ -130,6 +136,7 @@ public class GameServiceImpl implements IGameService {
     public List<Card> moveToTrash() {
         boardService.getDealerMoves().removeAll(boardService.getDealerMoves());
         boardService.getPlayerMoves().removeAll(boardService.getPlayerMoves());
+        boardService.setTurn(!boardService.getTurn());
         return null;
     }
 

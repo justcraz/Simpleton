@@ -100,6 +100,9 @@ public class BoardServiceImpl implements IBoardService {
         }
         return board.isTurn();
     }
+    void setTurn(boolean turn){
+        board.setTurn(turn);
+    }
 
     @Override
     public Suit getTrump() {
