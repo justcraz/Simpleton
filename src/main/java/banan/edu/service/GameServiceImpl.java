@@ -20,7 +20,7 @@ public class GameServiceImpl implements IGameService {
 
     public void makeMove(int cardId, List<Card> playerCards, List<Card> playerMoves) {
         if(boardService.getTurn()){
-            if(boardService.getDealerMoves().size() < boardService.getPlayerMoves().size()) {
+            if(boardService.getDealerMoves().size() <= boardService.getPlayerMoves().size()) {
                 Card card = playerCards.stream().filter(el -> el.getId() == cardId).findFirst().get();
                 if (boardService.getPlayerMoves().size() == 0) {
                     playerMoves.add(card);
@@ -47,6 +47,7 @@ public class GameServiceImpl implements IGameService {
                     Card card = playerCards.stream().filter(el -> el.getId() == cardId).findFirst().get();
                     playerMoves.add(card);
                     playerCards.remove(card);
+                    boardService.setTurn(!boardService.getTurn());
                 }
             }
         }
@@ -55,11 +56,28 @@ public class GameServiceImpl implements IGameService {
     @Override
     public Card dealerMove() {
         if(boardService.getTurn()==false) {
-            Card dealerAttack = boardService.getDealerCards().stream().min(Comparator.comparing(Card::getValue)).get();
-            boardService.getDealerCards().remove(dealerAttack);
-            boardService.getDealerMoves().add(dealerAttack);
-            boardService.setTurn(!boardService.getTurn());
-        }
+            if (boardService.getPlayerMoves().size() == 0) {
+                Card dealerAttack = boardService.getDealerCards().stream().min(Comparator.comparing(Card::getValue)).get();
+                boardService.getDealerCards().remove(dealerAttack);
+                boardService.getDealerMoves().add(dealerAttack);
+                boardService.setTurn(!boardService.getTurn());
+            } else {
+                List<Card> cardsInAction = new ArrayList<>();
+                cardsInAction.addAll(boardService.getDealerMoves());
+                cardsInAction.addAll(boardService.getPlayerMoves());
+                List<Denomination> denominations = cardsInAction.stream()
+                        .map(Card::getDenomination).collect(Collectors.toList());
+                Card cardToAttack = boardService.getDealerCards().stream()
+                        .filter(el->denominations.contains(el.getDenomination()))
+                        .findFirst().orElse(null);
+                if(cardToAttack!=null){
+                    boardService.getDealerCards().remove(cardToAttack);
+                    boardService.getDealerMoves().add(cardToAttack);
+                    boardService.setTurn(!boardService.getTurn());
+                }
+                }
+            }
+
         return null;
     }
 

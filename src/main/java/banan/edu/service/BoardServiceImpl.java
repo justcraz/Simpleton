@@ -71,7 +71,7 @@ public class BoardServiceImpl implements IBoardService {
 
     @Override
     public boolean getTurn() {
-        if(getStack().size()==40){
+        if(getStack().size()==40 && getPlayerCards().size()==6 && getDealerCards().size()==6){
             Card dealercard = getDealerCards().stream().filter(el->el.getSuit().equals(getTrump()))
                     .min(Comparator.comparing(Card::getValue)).orElse(null);
             Card playercard = getPlayerCards().stream().filter(el->el.getSuit().equals(getTrump()))
