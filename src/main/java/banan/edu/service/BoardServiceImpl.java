@@ -25,12 +25,12 @@ public class BoardServiceImpl implements IBoardService {
         board.getStack().addAll(deckCopy);
 
     }
-
+// привіт світ
     @Override
-    public void shuffleDeck(List<Card> deck) {
+    public void    shuffleDeck(List<Card> deck) {
         Collections.shuffle(deck);
         board.setTrump(deck.get(0).getSuit());
-        board.setTrumpCard(deck.get(0));
+        board.setTrumpCard(deck.get(0)); //
     }
 
     @Override
