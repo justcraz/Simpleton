@@ -24,6 +24,7 @@ public class GameServiceImpl implements IGameService {
             if(boardService.getPlayerMoves().size() == 0) {
                 playerMoves.add(card);
                 playerCards.remove(card);
+                boardService.setTurn(!boardService.getTurn());
             }else {
                 List<Card> cardsInAction = new ArrayList<>();
                 cardsInAction.addAll(boardService.getPlayerMoves());
@@ -36,6 +37,7 @@ public class GameServiceImpl implements IGameService {
                 if (denominationsInAction.contains(cardDenomination)) {
                     playerMoves.add(card);
                     playerCards.remove(card);
+                    boardService.setTurn(!boardService.getTurn());
                 }
             }
         }
@@ -47,13 +49,16 @@ public class GameServiceImpl implements IGameService {
             Card dealerAttack = boardService.getDealerCards().stream().min(Comparator.comparing(Card::getValue)).get();
             boardService.getDealerCards().remove(dealerAttack);
             boardService.getDealerMoves().add(dealerAttack);
+            boardService.setTurn(!boardService.getTurn());
         }
         return null;
     }
 
     @Override
     public Card myDefence() {
-        return null;
+        Card cardWhichIsAttacking = takeLastCard(boardService.getDealerMoves());
+        Card cardToDefence = findCardToDeffence(cardWhichIsAttacking,boardService.getPlayerCards());
+        return cardToDefence;
     }
 
     @Override
@@ -143,5 +148,28 @@ public class GameServiceImpl implements IGameService {
     @Override
     public List<Card> giveUpAndTakeCards() {
         return null;
+    }
+
+    private Card takeLastCard(List<Card> cards){
+        if(cards.size()!=0){
+            return cards.get(cards.size()-1);
+        }else{
+            return null;
+        }
+    }
+
+    private Card findCardToDeffence(Card card,List<Card> cards){
+        Card result = new Card();
+        List<Card> listOfSuitToDefence = cards.stream()
+                                .filter(el->el.getSuit().equals(card.getSuit()))
+                                .filter(el->el.getValue() > card.getValue())
+                                .collect(Collectors.toList());
+        List<Card> trumps = cards.stream()
+                .filter(el->el.getSuit().equals(boardService.getTrump())).collect(Collectors.toList());
+        List<Card> listToDefence = new ArrayList<>();
+        listToDefence.addAll(listOfSuitToDefence);
+        listToDefence.addAll(trumps);
+        result = listToDefence.stream().min(Comparator.comparing(Card::getValue)).orElse(null);
+        return result;
     }
 }
