@@ -3,6 +3,8 @@ package banan.edu.service;
 import banan.edu.model.Card;
 import banan.edu.model.Denomination;
 import banan.edu.model.Suit;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,25 +16,26 @@ public class GameServiceImplTest {
 
     BoardServiceImpl boardService = new BoardServiceImpl();
     GameServiceImpl gameService = new GameServiceImpl();
+    List<Card> cards = new ArrayList<>(
+            Arrays.asList(
+                    new Card (5,Suit.CLUB , Denomination.SEVEN , 7, "/image/C7.png"),
+                    new Card (9,Suit.CLUB , Denomination.JACK , 11, "/image/CJ.png"),
+                    new Card (10,Suit.CLUB , Denomination.QUEEN , 12, "/image/CQ.png"),
+                    new Card (11,Suit.CLUB , Denomination.KING , 13, "/image/CK.png"),
+                    new Card (12,Suit.CLUB , Denomination.ACE , 14, "/image/CA.png")));
 
-    @org.junit.Test
-    public void testTHEFIRSTMOVE() {
-//        gameService.giveCards();
-        List<Card> playerCards = new ArrayList<>(
-                Arrays.asList(
-                        new Card (12, Suit.CLUB , Denomination.ACE , 14, "/image/CA.png"),
-                        new Card (14,Suit.HEART , Denomination.THREE , 3, "/image/H3.png"),
-                        new Card (25,Suit.HEART , Denomination.ACE , 14, "/image/HA.png"),
-                        new Card (38,Suit.SPADE , Denomination.ACE , 14, "/image/PA.png"),
-                        new Card (47,Suit.DIAMOND , Denomination.TEN , 10, "/image/T10.png"),
-                        new Card (5,Suit.CLUB , Denomination.SEVEN , 7, "/image/C7.png")));
-        List<Card> playerMoves = new ArrayList<>();
-        List<Card> dealerMoves = new ArrayList<>();
+    @Test
+    public void WhenListThenLastCardAceClub() {
+        Assert.assertEquals(gameService.takeLastCard(cards),cards.get(4));
 
+    }
 
-        gameService.makeMove(5,playerCards,playerMoves);
-        Card card = playerMoves.get(0);
-        System.out.println(card);
+    @Test
+    public void isItPosible() {
+        int cardId = 5;
+        Suit trump = Suit.HEART;
+        List<Card> dealerMoves = new ArrayList<>(Arrays.asList(new Card (24,Suit.HEART , Denomination.KING , 13, "/image/HK.png")));
+        Assert.assertFalse(gameService.isItPosible(cardId,cards,dealerMoves,trump));
 
     }
 }

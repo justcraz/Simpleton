@@ -181,7 +181,7 @@ public class GameServiceImpl implements IGameService {
     }
 
 
-    private Card takeLastCard(List<Card> cards){
+    public Card takeLastCard(List<Card> cards){
         if(cards.size()!=0){
             return cards.get(cards.size()-1);
         }else{
@@ -205,7 +205,7 @@ public class GameServiceImpl implements IGameService {
         return result;
     }
 
-    private Boolean isItPosible(int cardId){
+    public Boolean isItPosible(int cardId){
         List<Card> cards = boardService.getPlayerCards();
         Card card = takeLastCard(boardService.getDealerMoves());
         List<Card> listOfSuitToDefence = cards.stream()
@@ -218,6 +218,22 @@ public class GameServiceImpl implements IGameService {
         listToDefence.addAll(listOfSuitToDefence);
         listToDefence.addAll(trumps);
         Card chosenCard = boardService.getPlayerCards().stream().filter(el -> el.getId() == cardId).findFirst().get();
+        return (listToDefence.contains(chosenCard));
+    }
+
+    public Boolean isItPosible(int cardId,List<Card> playerCards, List<Card> dealerMoves, Suit trump){
+        List<Card> cards = playerCards;
+        Card card = takeLastCard(dealerMoves);
+        List<Card> listOfSuitToDefence = cards.stream()
+                .filter(el->el.getSuit().equals(card.getSuit()))
+                .filter(el->el.getValue() > card.getValue())
+                .collect(Collectors.toList());
+        List<Card> trumps = cards.stream()
+                .filter(el->el.getSuit().equals(trump)).collect(Collectors.toList());
+        List<Card> listToDefence = new ArrayList<>();
+        listToDefence.addAll(listOfSuitToDefence);
+        listToDefence.addAll(trumps);
+        Card chosenCard = playerCards.stream().filter(el -> el.getId() == cardId).findFirst().get();
         return (listToDefence.contains(chosenCard));
     }
 
