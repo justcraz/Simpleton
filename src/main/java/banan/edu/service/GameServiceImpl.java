@@ -20,24 +20,33 @@ public class GameServiceImpl implements IGameService {
 
     public void makeMove(int cardId, List<Card> playerCards, List<Card> playerMoves) {
         if(boardService.getTurn()){
-            Card card = playerCards.stream().filter(el->el.getId()==cardId).findFirst().get();
-            if(boardService.getPlayerMoves().size() == 0) {
-                playerMoves.add(card);
-                playerCards.remove(card);
-                boardService.setTurn(!boardService.getTurn());
-            }else {
-                List<Card> cardsInAction = new ArrayList<>();
-                cardsInAction.addAll(boardService.getPlayerMoves());
-                cardsInAction.addAll(boardService.getDealerMoves());
-                List<Denomination> denominationsInAction =
-                        cardsInAction.stream()
-                                .map(el -> el.getDenomination())
-                                .collect(Collectors.toList());
-                Denomination cardDenomination = card.getDenomination();
-                if (denominationsInAction.contains(cardDenomination)) {
+            if(boardService.getDealerMoves().size() < boardService.getPlayerMoves().size()) {
+                Card card = playerCards.stream().filter(el -> el.getId() == cardId).findFirst().get();
+                if (boardService.getPlayerMoves().size() == 0) {
                     playerMoves.add(card);
                     playerCards.remove(card);
                     boardService.setTurn(!boardService.getTurn());
+                } else {
+                    List<Card> cardsInAction = new ArrayList<>();
+                    cardsInAction.addAll(boardService.getPlayerMoves());
+                    cardsInAction.addAll(boardService.getDealerMoves());
+                    List<Denomination> denominationsInAction =
+                            cardsInAction.stream()
+                                    .map(el -> el.getDenomination())
+                                    .collect(Collectors.toList());
+                    Denomination cardDenomination = card.getDenomination();
+                    if (denominationsInAction.contains(cardDenomination)) {
+                        playerMoves.add(card);
+                        playerCards.remove(card);
+                        boardService.setTurn(!boardService.getTurn());
+                    }
+                }
+            }else{
+                //Ми захищаємося
+                if(isItPosible(cardId)){
+                    Card card = playerCards.stream().filter(el -> el.getId() == cardId).findFirst().get();
+                    playerMoves.add(card);
+                    playerCards.remove(card);
                 }
             }
         }
@@ -171,5 +180,21 @@ public class GameServiceImpl implements IGameService {
         listToDefence.addAll(trumps);
         result = listToDefence.stream().min(Comparator.comparing(Card::getValue)).orElse(null);
         return result;
+    }
+
+    private Boolean isItPosible(int cardId){
+        List<Card> cards = boardService.getPlayerCards();
+        Card card = takeLastCard(boardService.getDealerMoves());
+        List<Card> listOfSuitToDefence = cards.stream()
+                .filter(el->el.getSuit().equals(card.getSuit()))
+                .filter(el->el.getValue() > card.getValue())
+                .collect(Collectors.toList());
+        List<Card> trumps = cards.stream()
+                .filter(el->el.getSuit().equals(boardService.getTrump())).collect(Collectors.toList());
+        List<Card> listToDefence = new ArrayList<>();
+        listToDefence.addAll(listOfSuitToDefence);
+        listToDefence.addAll(trumps);
+        Card chosenCard = boardService.getPlayerCards().stream().filter(el -> el.getId() == cardId).findFirst().get();
+        return (listToDefence.contains(chosenCard));
     }
 }
