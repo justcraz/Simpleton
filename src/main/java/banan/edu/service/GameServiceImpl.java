@@ -189,6 +189,7 @@ public class GameServiceImpl implements IGameService {
         }
     }
 
+
     private Card findCardToDeffence(Card card,List<Card> cards){
         Card result = new Card();
         List<Card> listOfSuitToDefence = cards.stream()
