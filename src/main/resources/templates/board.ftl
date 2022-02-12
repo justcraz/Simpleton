@@ -21,6 +21,7 @@
 <button><a href="/ui/shuffle">shuffle</a></button>
 <button><a href="/ui/move/to/trash">move to trash</a></button>
 <button><a href="/ui/dealer/move">dealer moves</a></button>
+<button><a href="/ui/give/up">give up</a></button>
 <h1>${turn}</h1>
 <div class="allcards">
     <div class="trumpCard">

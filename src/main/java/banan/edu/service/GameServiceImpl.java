@@ -69,7 +69,7 @@ public class GameServiceImpl implements IGameService {
                         .map(Card::getDenomination).collect(Collectors.toList());
                 Card cardToAttack = boardService.getDealerCards().stream()
                         .filter(el->denominations.contains(el.getDenomination()))
-                        .findFirst().orElse(null);
+                        .sorted(Comparator.comparing(Card::getValue)).findFirst().orElse(null);
                 if(cardToAttack!=null){
                     boardService.getDealerCards().remove(cardToAttack);
                     boardService.getDealerMoves().add(cardToAttack);
@@ -176,6 +176,7 @@ public class GameServiceImpl implements IGameService {
 
     @Override
     public List<Card> giveUpAndTakeCards() {
+        takeCards();
         return null;
     }
 
@@ -216,5 +217,13 @@ public class GameServiceImpl implements IGameService {
         listToDefence.addAll(trumps);
         Card chosenCard = boardService.getPlayerCards().stream().filter(el -> el.getId() == cardId).findFirst().get();
         return (listToDefence.contains(chosenCard));
+    }
+
+    private void takeCards(){
+        boardService.getPlayerCards().addAll(boardService.getPlayerMoves());
+        boardService.getPlayerCards().addAll(boardService.getDealerMoves());
+        boardService.getDealerMoves().removeAll(boardService.getDealerMoves());
+        boardService.getPlayerMoves().removeAll(boardService.getPlayerMoves());
+        boardService.setTurn(false);
     }
 }
