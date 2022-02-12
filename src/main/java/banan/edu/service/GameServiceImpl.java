@@ -118,11 +118,13 @@ public class GameServiceImpl implements IGameService {
         if(cardAsDeffence != null && cardAsDeffence.getValue() > cardAttack.getValue()){
             boardService.getDealerCards().remove(cardAsDeffence);
             boardService.getDealerMoves().add(cardAsDeffence);
+            boardService.setTurn(!boardService.getTurn());
         }else{
             boardService.getDealerCards().addAll(playerMoves);
             boardService.getDealerCards().addAll(boardService.getDealerMoves());
             boardService.getDealerMoves().removeAll(boardService.getDealerMoves());
             boardService.getPlayerMoves().removeAll(boardService.getPlayerMoves());
+            boardService.setTurn(!boardService.getTurn());
         }
         }
     }
