@@ -180,6 +180,7 @@ public class GameServiceImpl implements IGameService {
         return null;
     }
 
+
     private Card takeLastCard(List<Card> cards){
         if(cards.size()!=0){
             return cards.get(cards.size()-1);
