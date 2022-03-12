@@ -50,6 +50,18 @@ public class GameServiceImpl implements IGameService {
                     boardService.setTurn(!boardService.getTurn());
                 }
             }
+            if(boardService.getPlayerCards().size() == 0 && boardService.getStack().size() == 0){
+                boardService.setMessage("You Win");
+                return;
+            }
+            if(boardService.getDealerCards().size() == 0 && boardService.getStack().size() == 0){
+                boardService.setMessage("You Lose!");
+                return;
+            }
+            if(boardService.getDealerCards().size() == 0 && boardService.getPlayerCards().size() == 0 && boardService.getStack().size() == 0){
+                boardService.setMessage("Draw");
+                return;
+            }
         }
     }
 
@@ -77,7 +89,9 @@ public class GameServiceImpl implements IGameService {
                 }
                 }
             }
-
+        if(boardService.getPlayerCards().size() > 0 && boardService.getStack().size() == 0){
+            boardService.setMessage("You Lose!");
+        }
         return null;
     }
 
@@ -132,38 +146,37 @@ public class GameServiceImpl implements IGameService {
     public void giveCards() {
         int playerHasCards = boardService.getPlayerCards().size();
         int mustGivetoPlayer = 6 - playerHasCards;
-        if(playerHasCards < 7 && !boardService.getStack().isEmpty()){
-            for (int i = 0; i <mustGivetoPlayer ; i++) {
-                Card card = boardService.getStack().get(boardService.getStack().size()-1);
-                if(card.getSuit().equals(boardService.getTrump())){
-                    card.setValue(card.getValue()+13);
+        if (boardService.getStack().size() > mustGivetoPlayer) {
+            if (playerHasCards < 7 && !boardService.getStack().isEmpty()) {
+                for (int i = 0; i < mustGivetoPlayer; i++) {
+                    Card card = boardService.getStack().get(boardService.getStack().size() - 1);
+                    if (card.getSuit().equals(boardService.getTrump())) {
+                        card.setValue(card.getValue() + 13);
+                    }
+                    boardService.getStack().remove(card);
+                    boardService.getPlayerCards().add(card);
                 }
-                boardService.getStack().remove(card);
-                boardService.getPlayerCards().add(card);
+                boardService.getPlayerCards().sort(Comparator.comparing(Card::getSuit).thenComparing(Card::getValue));
             }
-            boardService.getPlayerCards().sort(Comparator.comparing(Card::getSuit).thenComparing(Card::getValue));
         }
     }
 
     public void giveCardsToDealer() {
         int dealerHasCards = boardService.getDealerCards().size();
         int mustGivetoDealer = 6 - dealerHasCards;
-        if(dealerHasCards < 7 && !boardService.getStack().isEmpty()){
-            for (int i = 0; i <mustGivetoDealer ; i++) {
-                Card card = boardService.getStack().get(boardService.getStack().size()-1);
-                if(card.getSuit().equals(boardService.getTrump())){
-                    card.setValue(card.getValue()+13);
+        if (boardService.getStack().size() > mustGivetoDealer) {
+            if (dealerHasCards < 7 && !boardService.getStack().isEmpty()) {
+                for (int i = 0; i < mustGivetoDealer; i++) {
+                    Card card = boardService.getStack().get(boardService.getStack().size() - 1);
+                    if (card.getSuit().equals(boardService.getTrump())) {
+                        card.setValue(card.getValue() + 13);
+                    }
+                    boardService.getStack().remove(card);
+                    boardService.getDealerCards().add(card);
                 }
-                boardService.getStack().remove(card);
-                boardService.getDealerCards().add(card);
+                boardService.getDealerCards().sort(Comparator.comparing(Card::getSuit).thenComparing(Card::getValue));
             }
-            boardService.getDealerCards().sort(Comparator.comparing(Card::getSuit).thenComparing(Card::getValue));
         }
-    }
-
-    @Override
-    public Card rechargeCards() {
-        return null;
     }
 
     @Override

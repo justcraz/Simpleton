@@ -42,6 +42,7 @@ public class BoardUIController {
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",boardService.getStack().size());
+        model.addAttribute("finalMessage",boardService.getMessage());
         return "board";
     }
 
@@ -64,6 +65,7 @@ public class BoardUIController {
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",boardService.getStack().size());
+        model.addAttribute("finalMessage",boardService.getMessage());
         return "board";
     }
 
@@ -86,7 +88,7 @@ public class BoardUIController {
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",boardService.getStack().size());
-
+        model.addAttribute("finalMessage",boardService.getMessage());
         return "board";
     }
 
@@ -109,6 +111,7 @@ public class BoardUIController {
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",boardService.getStack().size());
+        model.addAttribute("finalMessage",boardService.getMessage());
         return "board";
     }
 
@@ -133,6 +136,7 @@ public class BoardUIController {
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",boardService.getStack().size());
+        model.addAttribute("finalMessage",boardService.getMessage());
         return "board";
     }
 
@@ -155,6 +159,7 @@ public class BoardUIController {
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",boardService.getStack().size());
+        model.addAttribute("finalMessage",boardService.getMessage());
         return "board";
     }
 
@@ -176,6 +181,7 @@ public class BoardUIController {
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",deck2.size()+1);
+        model.addAttribute("finalMessage",boardService.getMessage());
         return "board";
     }
 
@@ -198,7 +204,32 @@ public class BoardUIController {
         model.addAttribute("playerCards",playerCards);
         model.addAttribute("dealerCards",dealerCards);
         model.addAttribute("cardsSize",boardService.getStack().size());
+        model.addAttribute("finalMessage",boardService.getMessage());
         return "board";
     }
+
+    @GetMapping("/rechargeCards")
+    String rechargeCards(Model model){
+        boardService.rechargeCards();
+        List<Card> deck = boardService.getStack();
+        List<Card> deck2 = new ArrayList<>();
+        List<Card> playerCards = boardService.getPlayerCards();
+        List<Card> dealerCards = boardService.getDealerCards();
+        for (int i = 1; i < boardService.getStack().size(); i++) {
+            deck2.add(new Card(i,"/image/back.png",i*3));
+        }
+        String turnAsString = (boardService.getTurn())? "player move" : "dealer move";
+        model.addAttribute("turn",turnAsString);
+        model.addAttribute("playerMoves",boardService.getPlayerMoves());
+        model.addAttribute("dealerMoves",boardService.getDealerMoves());
+        model.addAttribute("deck",deck2);
+        model.addAttribute("trumpCard",boardService.getTrumpCard());
+        model.addAttribute("playerCards",playerCards);
+        model.addAttribute("dealerCards",dealerCards);
+        model.addAttribute("cardsSize",boardService.getStack().size());
+        model.addAttribute("finalMessage",boardService.getMessage());
+        return "board";
+    }
+
 
 }

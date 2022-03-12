@@ -21,13 +21,14 @@ public class BoardServiceImpl implements IBoardService {
         deck = new Deck();
         List<Card> deckCopy = new ArrayList<>(deck.getDeck());
         board = new Board();
+        board.setMessage("");
         shuffleDeck(deckCopy);
         board.getStack().addAll(deckCopy);
 
     }
 // привіт світ
     @Override
-    public void    shuffleDeck(List<Card> deck) {
+    public void shuffleDeck(List<Card> deck) {
         Collections.shuffle(deck);
         board.setTrump(deck.get(0).getSuit());
         board.setTrumpCard(deck.get(0)); //
@@ -66,7 +67,7 @@ public class BoardServiceImpl implements IBoardService {
 
     @Override
     public String getMessage() {
-        return null;
+        return board.getMessage();
     }
 
     @Override
@@ -111,4 +112,18 @@ public class BoardServiceImpl implements IBoardService {
     public Card getTrumpCard() {
         return board.getTrumpCard();
     }
+
+    public void rechargeCards() {
+        board = new Board();
+        board.setMessage("");
+        List<Card> deckCopy = new ArrayList<>();
+        deckCopy.addAll(deck.getDeck());
+        shuffleDeck(deckCopy);
+        board.getStack().addAll(deckCopy);
+        }
+
+    public void setMessage(String text){
+        board.setMessage(text);
+    }
+
 }

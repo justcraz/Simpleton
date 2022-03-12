@@ -22,6 +22,7 @@
 <button><a href="/ui/move/to/trash">move to trash</a></button>
 <button><a href="/ui/dealer/move">dealer moves</a></button>
 <button><a href="/ui/give/up">give up</a></button>
+<button><a href="/ui/rechargeCards">recharge cards</a></button>
 <h1>${turn}</h1>
 <div class="allcards">
     <div class="trumpCard">
@@ -45,6 +46,7 @@
             <img src="${card.image}" alt="">
         </#list>
     </div>
+    <h1 class="finalMessage">${finalMessage}</h1>
     <div class="playerMoves">
         <#list playerMoves as card>
             <img src="${card.image}" alt="">

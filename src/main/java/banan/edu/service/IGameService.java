@@ -8,7 +8,6 @@ public interface IGameService {
     Card dealerMove();
     Card myDefence();
     void dealerDefence();
-    Card rechargeCards();
     List<Card> moveToTrash();
     List<Card> giveUpAndTakeCards();
 }

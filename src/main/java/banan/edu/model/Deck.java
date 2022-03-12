@@ -65,4 +65,9 @@ public class Deck {
     public List<Card> getDeck() {
         return deck;
     }
+
+    public void clear(){
+        deck.removeAll(deck);
+    }
+
 }
