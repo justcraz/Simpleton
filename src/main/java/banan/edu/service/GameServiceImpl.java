@@ -1,11 +1,10 @@
 package banan.edu.service;
 
-import banan.edu.model.Card;
-import banan.edu.model.Denomination;
-import banan.edu.model.Suit;
+import banan.edu.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,6 +16,9 @@ public class GameServiceImpl implements IGameService {
 
     @Autowired
     BoardServiceImpl boardService;
+
+    @Autowired
+    RecordRepository recordRepository;
 
     public void makeMove(int cardId, List<Card> playerCards, List<Card> playerMoves) {
         if(boardService.getTurn()){
@@ -52,14 +54,17 @@ public class GameServiceImpl implements IGameService {
             }
             if(boardService.getPlayerCards().size() == 0 && boardService.getStack().size() == 0){
                 boardService.setMessage("You Win");
+                recordRepository.save(new Record("You Win", LocalDateTime.now()));
                 return;
             }
             if(boardService.getDealerCards().size() == 0 && boardService.getStack().size() == 0){
+                recordRepository.save(new Record("You Lose", LocalDateTime.now()));
                 boardService.setMessage("You Lose!");
                 return;
             }
             if(boardService.getDealerCards().size() == 0 && boardService.getPlayerCards().size() == 0 && boardService.getStack().size() == 0){
                 boardService.setMessage("Draw");
+                recordRepository.save(new Record("You Draw", LocalDateTime.now()));
                 return;
             }
         }
@@ -87,10 +92,11 @@ public class GameServiceImpl implements IGameService {
                     boardService.getDealerMoves().add(cardToAttack);
                     boardService.setTurn(!boardService.getTurn());
                 }
-                }
             }
+        }
         if(boardService.getPlayerCards().size() > 0 && boardService.getStack().size() == 0){
             boardService.setMessage("You Lose!");
+            recordRepository.save(new Record("You Lose", LocalDateTime.now()));
         }
         return null;
     }
@@ -108,38 +114,38 @@ public class GameServiceImpl implements IGameService {
         if(playerMoves.size() != 0) {
             Card cardAttack = playerMoves.get(playerMoves.size() - 1);
 
-        if (playerMoves.size() == boardService.getDealerMoves().size()){
-            return;
-        }
+            if (playerMoves.size() == boardService.getDealerMoves().size()){
+                return;
+            }
 
-        List<Card> trumps = boardService.getDealerCards().stream()
-                .filter(el->el.getSuit().equals(boardService.getTrump()))
-                .filter(el->el.getValue()>cardAttack.getValue())
-                .collect(Collectors.toList());
-        List<Card> suits = boardService.getDealerCards().stream()
-                .filter(el->el.getSuit().equals(cardAttack.getSuit()))
-                .filter(el->el.getValue()>cardAttack.getValue()).collect(Collectors.toList());
+            List<Card> trumps = boardService.getDealerCards().stream()
+                    .filter(el->el.getSuit().equals(boardService.getTrump()))
+                    .filter(el->el.getValue()>cardAttack.getValue())
+                    .collect(Collectors.toList());
+            List<Card> suits = boardService.getDealerCards().stream()
+                    .filter(el->el.getSuit().equals(cardAttack.getSuit()))
+                    .filter(el->el.getValue()>cardAttack.getValue()).collect(Collectors.toList());
 
-        List<Card> listDeffence = new ArrayList<>();
-        listDeffence.addAll(trumps);
-        listDeffence.addAll(suits);
-        Card cardAsDeffence;
-        if(listDeffence.isEmpty()){
-            cardAsDeffence = null;
-        }else{
-            cardAsDeffence = listDeffence.stream().min(Comparator.comparing(Card::getValue)).get();
-        }
-        if(cardAsDeffence != null && cardAsDeffence.getValue() > cardAttack.getValue()){
-            boardService.getDealerCards().remove(cardAsDeffence);
-            boardService.getDealerMoves().add(cardAsDeffence);
-            boardService.setTurn(!boardService.getTurn());
-        }else{
-            boardService.getDealerCards().addAll(playerMoves);
-            boardService.getDealerCards().addAll(boardService.getDealerMoves());
-            boardService.getDealerMoves().removeAll(boardService.getDealerMoves());
-            boardService.getPlayerMoves().removeAll(boardService.getPlayerMoves());
-            boardService.setTurn(!boardService.getTurn());
-        }
+            List<Card> listDeffence = new ArrayList<>();
+            listDeffence.addAll(trumps);
+            listDeffence.addAll(suits);
+            Card cardAsDeffence;
+            if(listDeffence.isEmpty()){
+                cardAsDeffence = null;
+            }else{
+                cardAsDeffence = listDeffence.stream().min(Comparator.comparing(Card::getValue)).get();
+            }
+            if(cardAsDeffence != null && cardAsDeffence.getValue() > cardAttack.getValue()){
+                boardService.getDealerCards().remove(cardAsDeffence);
+                boardService.getDealerMoves().add(cardAsDeffence);
+                boardService.setTurn(!boardService.getTurn());
+            }else{
+                boardService.getDealerCards().addAll(playerMoves);
+                boardService.getDealerCards().addAll(boardService.getDealerMoves());
+                boardService.getDealerMoves().removeAll(boardService.getDealerMoves());
+                boardService.getPlayerMoves().removeAll(boardService.getPlayerMoves());
+                boardService.setTurn(!boardService.getTurn());
+            }
         }
     }
 
@@ -159,7 +165,9 @@ public class GameServiceImpl implements IGameService {
                 boardService.getPlayerCards().sort(Comparator.comparing(Card::getSuit).thenComparing(Card::getValue));
             }
         }
+        recordRepository.findAll().stream().filter(el->el.getMessage().contains("1")).forEach(System.out::println);
     }
+
 
     public void giveCardsToDealer() {
         int dealerHasCards = boardService.getDealerCards().size();
@@ -177,6 +185,7 @@ public class GameServiceImpl implements IGameService {
                 boardService.getDealerCards().sort(Comparator.comparing(Card::getSuit).thenComparing(Card::getValue));
             }
         }
+        recordRepository.save(new Record("Give card to dealer "+ mustGivetoDealer,LocalDateTime.now()));
     }
 
     @Override
@@ -206,9 +215,9 @@ public class GameServiceImpl implements IGameService {
     private Card findCardToDeffence(Card card,List<Card> cards){
         Card result = new Card();
         List<Card> listOfSuitToDefence = cards.stream()
-                                .filter(el->el.getSuit().equals(card.getSuit()))
-                                .filter(el->el.getValue() > card.getValue())
-                                .collect(Collectors.toList());
+                .filter(el->el.getSuit().equals(card.getSuit()))
+                .filter(el->el.getValue() > card.getValue())
+                .collect(Collectors.toList());
         List<Card> trumps = cards.stream()
                 .filter(el->el.getSuit().equals(boardService.getTrump())).collect(Collectors.toList());
         List<Card> listToDefence = new ArrayList<>();

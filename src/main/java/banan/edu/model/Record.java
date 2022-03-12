@@ -1,9 +1,13 @@
 package banan.edu.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
-
+@Document
 public class Record {
+    @Id
     private String id;
     private String message;
     private LocalDateTime dateTime;
